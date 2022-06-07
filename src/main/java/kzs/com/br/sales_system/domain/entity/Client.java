@@ -1,8 +1,17 @@
 package kzs.com.br.sales_system.domain.entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "client")
 public class Client {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "name", length = 100)
     private String name;
 
     public Client() {
