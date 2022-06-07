@@ -29,25 +29,25 @@ public class SalesSystemApplication {
             clientRepository.save(new Client("Kevin"));
             clientRepository.save(new Client("Verônica"));
 
-            List<Client> allClients = clientRepository.getClients();
+            List<Client> allClients = clientRepository.findAll();
             allClients.forEach(System.out::println);
 
             System.out.println("Update clients:");
             allClients.forEach(c -> {
                 c.setName(c.getName() + " updated");
-                clientRepository.update(c);
+                clientRepository.save(c);
             });
 
-            allClients = clientRepository.getClients();
+            allClients = clientRepository.findAll();
             allClients.forEach(System.out::println);
 
             System.out.println("Find clients by name:");
-            clientRepository.getClientByName("nica").forEach(System.out::println);
+            clientRepository.findByNameLike("nica").forEach(System.out::println);
 
             System.out.println("Delete clients:");
             clientRepository.deleteById(2L);
 
-            allClients = clientRepository.getClients();
+            allClients = clientRepository.findAll();
             if (allClients.isEmpty()) {
                 System.out.println("Clients is empty");
             } else {
