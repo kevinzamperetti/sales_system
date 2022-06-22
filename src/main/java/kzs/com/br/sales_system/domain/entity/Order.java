@@ -21,8 +21,8 @@ public class Order {
     @Column(name = "date_order")
     private LocalDate dateOrder;
 
-    @Column(name = "total_order", length = 20, precision = 2)
-    private BigDecimal TotalOrder;
+    @Column(name = "total_order", precision = 20, scale = 2)
+    private BigDecimal totalOrder;
 
     @OneToMany(mappedBy = "order")
     private Set<OrderItem> orderItems;
@@ -52,11 +52,11 @@ public class Order {
     }
 
     public BigDecimal getTotalOrder() {
-        return TotalOrder;
+        return totalOrder;
     }
 
     public void setTotalOrder(BigDecimal totalOrder) {
-        TotalOrder = totalOrder;
+        this.totalOrder = totalOrder;
     }
 
     public Set<OrderItem> getOrderItems() {
@@ -65,5 +65,14 @@ public class Order {
 
     public void setOrderItems(Set<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", dateOrder=" + dateOrder +
+                ", TotalOrder=" + totalOrder +
+                '}';
     }
 }

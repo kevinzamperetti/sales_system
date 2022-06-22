@@ -2,7 +2,9 @@ package kzs.com.br.sales_system;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import kzs.com.br.sales_system.domain.entity.Client;
+import kzs.com.br.sales_system.domain.entity.Order;
 import kzs.com.br.sales_system.domain.repository.ClientRepository;
+import kzs.com.br.sales_system.domain.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,42 +25,28 @@ public class SalesSystemApplication {
     @Value("${application.name}")
     private String applicationName;
 
+
+
     @Bean
-    public CommandLineRunner init(@Autowired ClientRepository clientRepository) {
+    public CommandLineRunner init(@Autowired ClientRepository clientRepository,
+                                  @Autowired OrderRepository orderRepository) {
         return args -> {
 
             System.out.println("Save clients:");
-            clientRepository.save(new Client("Kevin"));
-            clientRepository.save(new Client("Verônica"));
+            Client kevin = new Client("Kevin");
+            clientRepository.save(kevin);
 
-            List<Client> allClients = clientRepository.findAll();
-            allClients.forEach(System.out::println);
+            Order o = new Order();
+            o.setClient(kevin);
+            o.setDateOrder(LocalDate.now());
+            o.setTotalOrder(BigDecimal.valueOf(100));
+            orderRepository.save(o);
 
-            System.out.println("Update clients:");
-            allClients.forEach(c -> {
-                c.setName(c.getName() + " updated");
-                clientRepository.save(c);
-            });
+            Client clientFetchOrders = clientRepository.findClientFetchOrders(kevin.getId());
+            System.out.println(clientFetchOrders);
+            System.out.println(clientFetchOrders.getOrders());
 
-            allClients = clientRepository.findAll();
-            allClients.forEach(System.out::println);
-
-            System.out.println("Find clients by name:");
-            clientRepository.findByNameLike("updated").forEach(System.out::println);
-
-            System.out.println("Delete clients:");
-            clientRepository.deleteById(2L);
-
-            allClients = clientRepository.findAll();
-            if (allClients.isEmpty()) {
-                System.out.println("Clients is empty");
-            } else {
-                allClients.forEach(System.out::println);
-            }
-
-            System.out.println("Verify if Name exists:");
-            System.out.println(clientRepository.existsByName("Kevin updated"));
-            System.out.println(clientRepository.existsByName("Verônica"));
+            orderRepository.findByClient(kevin).forEach(System.out::println);
 
 
         };
