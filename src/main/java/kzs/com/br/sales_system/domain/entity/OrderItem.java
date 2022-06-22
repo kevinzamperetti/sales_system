@@ -1,10 +1,25 @@
 package kzs.com.br.sales_system.domain.entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "orders_item")
 public class OrderItem {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
+
+    @Column(name = "quantity")
     private Integer quantity;
 
     public Long getId() {

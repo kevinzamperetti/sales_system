@@ -42,7 +42,7 @@ public class SalesSystemApplication {
             allClients.forEach(System.out::println);
 
             System.out.println("Find clients by name:");
-            clientRepository.findByNameLike("nica").forEach(System.out::println);
+            clientRepository.findByNameLike("updated").forEach(System.out::println);
 
             System.out.println("Delete clients:");
             clientRepository.deleteById(2L);
@@ -53,6 +53,11 @@ public class SalesSystemApplication {
             } else {
                 allClients.forEach(System.out::println);
             }
+
+            System.out.println("Verify if Name exists:");
+            System.out.println(clientRepository.existsByName("Kevin updated"));
+            System.out.println(clientRepository.existsByName("Verônica"));
+
 
         };
     }
